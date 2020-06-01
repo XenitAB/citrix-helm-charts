@@ -1,0 +1,11 @@
+{{- if not .Values.configMap.useExistingConfigMap }}
+kind: ConfigMap
+apiVersion: v1 
+metadata:
+  name: {{ include "citrix-adm-agent.fullname" . }}
+  labels:
+    {{- include "citrix-adm-agent.labels" . | nindent 4 }}
+data:
+  agent.conf: {{ .Values.configMap.agent_conf }}
+  proxy.conf: {{ .Values.configMap.proxy_conf }}
+{{- end }}
