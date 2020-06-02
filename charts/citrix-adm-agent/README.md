@@ -56,6 +56,26 @@ AZURE_KEYVAULT_NAME="keyvaultname"
 az keyvault secret set --vault-name ${AZURE_KEYVAULT_NAME} --name citrix-adm-agent --file "${FILENAME}.json"
 ```
 
+This could be read from Azure KeyVault using the following:
+
+```YAML
+- name: Get citrix-adm-agent secret from KeyVault
+  shell: "az keyvault secret show --vault keyvaultname --name citrix-adm-agent --output json"
+  register: citrixAdmAgentSecret
+
+- name: Set Citrix ADM Agent facts
+  set_fact:
+    citrixAdmAgentConfig:
+      secret:
+        db_key_conf: "{{ ((citrixAdmAgentSecret.stdout | from_json).value | from_json).secret.db_key_conf }}"
+        private_pem: "{{ ((citrixAdmAgentSecret.stdout | from_json).value | from_json).secret.private_pem }}"
+        public_pem: "{{ ((citrixAdmAgentSecret.stdout | from_json).value | from_json).secret.public_pem }}"
+        password: "{{ ((citrixAdmAgentSecret.stdout | from_json).value | from_json).secret.password }}"
+      configmap:
+        agent_conf: "{{ ((citrixAdmAgentSecret.stdout | from_json).value | from_json).configmap.agent_conf | b64decode }}"
+        proxy_conf: "{{ ((citrixAdmAgentSecret.stdout | from_json).value | from_json).configmap.proxy_conf | b64decode }}"
+```
+
 #### Adding the secrets manually to Kubernetes
 
 ```shell
