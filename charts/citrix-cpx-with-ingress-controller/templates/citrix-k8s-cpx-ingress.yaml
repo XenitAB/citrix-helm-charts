@@ -6,7 +6,7 @@ spec:
   selector:
     matchLabels:
       app: cpx-ingress
-  replicas: 1
+  replicas: {{ .Values.replics }}
   template:
     metadata:
       name: cpx-ingress
@@ -38,11 +38,25 @@ spec:
           - name: "PLATFORM"
             value: {{ .Values.platform }}
 {{- end }}
+{{- if .Values.bandwidth }}
+          - name: "BANDWIDTH"
+            value: {{ .Values.bandwidth }}
+{{- end }}
           volumeMounts:
             - mountPath: /cpx/conf/
               name: cpx-volume1
             - mountPath: /cpx/crash/
               name: cpx-volume2
+{{- if .Values.cpxConfig.configmap.mount }}
+            - name: cpx-configuration
+              mountPath: /etc/cpx.conf
+              subPath: cpx.conf
+{{- end }}
+{{- if .Values.cpxConfig.dhkeySecret.mount }}
+            - name: dhkey
+              mountPath: "/cpxsecret"
+              readOnly: true
+{{- end }}
 {{- if .Values.cic.required }}
         # Add cic as a sidecar
         - name: cic
@@ -122,6 +136,19 @@ spec:
           emptyDir: {}
         - name: cpx-volume2
           emptyDir: {}
+{{- if .Values.cpxConfig.configmap.mount }}
+        - name: cpx-configuration
+          configMap:
+            name: {{ .Values.cpxConfig.configmap.name }}
+{{- end }}
+{{- if .Values.cpxConfig.dhkeySecret.mount }}
+        - name: dhkey
+          secret:
+            secretName: {{ .Values.cpxConfig.dhkeySecret.secretName }}
+            items:
+            - key: {{ .Values.cpxConfig.dhkeySecret.dhkeyName }}
+              path: {{ .Values.cpxConfig.dhkeySecret.dhkeyName }}
+{{- end }}
 ---
 
 apiVersion: v1
@@ -132,7 +159,9 @@ metadata:
     app: cpx-service
     service-type: citrix-adc-cpx-monitor
 spec:
-  type: NodePort
+  externalTrafficPolicy: {{ .Values.service.externalTrafficPolicy }}
+  type: {{ .Values.service.type }}
+  sessionAffinity: {{ .Values.service.sessionAffinity }}
   ports:
   - port: 80
     protocol: TCP
