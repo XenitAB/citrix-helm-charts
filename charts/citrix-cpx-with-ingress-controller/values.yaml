@@ -20,8 +20,6 @@ lsIP:
 lsPort:
 # nsNamespace is the prefix for the resources on the Citrix ADC
 nsNamespace:
-#loginFileName is secret file for Citrix ADC CPX login
-loginFileName: cpxlogin
 # Specify the platform license here.
 platform:
 # Specify the bandwidth (to checkout from ADM)
@@ -59,6 +57,12 @@ cpxConfig:
     secretName: cpx-dhkey   # Name of the secret containing the dhkey
     dhkeyName: dhKey        # Name of the key in the Secret containing the dh key
     dhkey: ""               # Should not be used, better to creat it outside of helm. Should be the dhkey base 64 encoded
+  loginCredentials:
+    useExisting: false
+    secretName: cpx-credentials
+    username: bnNyb290
+    password: bnNyb290
+    
 # CRD Installation
 crds:
 # If false, CustomResourceDefinitions  will not be installed.

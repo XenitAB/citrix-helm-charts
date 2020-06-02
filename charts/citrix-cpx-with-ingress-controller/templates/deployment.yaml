@@ -26,6 +26,16 @@ spec:
             value: {{ .Values.license.accept | quote }}
           - name: "KUBERNETES_TASK_ID"
             value: ""
+          - name: "NS_USER"
+            valueFrom:
+             secretKeyRef:
+              name: {{ .Values.cpxConfig.loginCredentials.secretName }}
+              key: username
+          - name: "NS_PASSWORD"
+            valueFrom:
+             secretKeyRef:
+              name: {{ .Values.cpxConfig.loginCredentials.secretName }}
+              key: password
 {{- if .Values.lsIP }}
           - name: "LS_IP"
             value: {{ .Values.lsIP | quote }}
@@ -76,12 +86,12 @@ spec:
           - name: "NS_USER"
             valueFrom:
              secretKeyRef:
-              name: {{ .Values.loginFileName }}
+              name: {{ .Values.cpxConfig.loginCredentials.secretName }}
               key: username
           - name: "NS_PASSWORD"
             valueFrom:
              secretKeyRef:
-              name: {{ .Values.loginFileName }}
+              name: {{ .Values.cpxConfig.loginCredentials.secretName }}
               key: password
 {{- if .Values.logProxy }}
           - name: "NS_LOGPROXY"
@@ -125,9 +135,15 @@ spec:
             - "--port={{ .Values.exporter.ports.containerPort }}"
           env:
           - name: "NS_USER"
-            value: "nsroot"
+            valueFrom:
+             secretKeyRef:
+              name: {{ .Values.cpxConfig.loginCredentials.secretName }}
+              key: username
           - name: "NS_PASSWORD"
-            value: "nsroot"
+            valueFrom:
+             secretKeyRef:
+              name: {{ .Values.cpxConfig.loginCredentials.secretName }}
+              key: password
           securityContext:
             readOnlyRootFilesystem: true
 {{- end }}
