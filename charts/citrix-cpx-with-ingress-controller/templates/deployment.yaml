@@ -23,7 +23,7 @@ spec:
              privileged: true
           env:
           - name: "EULA"
-            value: "{{ .Values.license.accept | quote }}"
+            value: {{ .Values.license.accept | quote }}
           - name: "KUBERNETES_TASK_ID"
             value: ""
 {{- if .Values.lsIP }}
