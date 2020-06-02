@@ -6,6 +6,8 @@ metadata:
   labels:
     {{- include "citrix-adm-agent.labels" . | nindent 4 }}
 data:
-  agent.conf: {{ .Values.configMap.agent_conf }}
-  proxy.conf: {{ .Values.configMap.proxy_conf }}
+  agent.conf: |
+    {{- .Values.configMap.agent_conf | b64dec | nindent 4 }}
+  proxy.conf: |
+    {{- .Values.configMap.proxy_conf | b64dec | nindent 4 }}
 {{- end }}

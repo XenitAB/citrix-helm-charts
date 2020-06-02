@@ -18,7 +18,7 @@ secret:
 configMap:
   useExistingConfigMap: true
   existingConfigMapName: citrix-adm-agent
-  # XML - download from ADM Service
+  # Base64 encoded XML - download from ADM Service
   # It's not recommended to add these using the values file, add them outside of Helm if possible
   # Set useExistingConfigMap to false to use the below
   agent_conf: ""
