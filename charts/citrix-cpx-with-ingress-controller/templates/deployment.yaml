@@ -26,16 +26,6 @@ spec:
             value: {{ .Values.license.accept | quote }}
           - name: "KUBERNETES_TASK_ID"
             value: ""
-          - name: "NS_USER"
-            valueFrom:
-             secretKeyRef:
-              name: {{ .Values.cpxConfig.loginCredentials.secretName }}
-              key: username
-          - name: "NS_PASSWORD"
-            valueFrom:
-             secretKeyRef:
-              name: {{ .Values.cpxConfig.loginCredentials.secretName }}
-              key: password
 {{- if .Values.lsIP }}
           - name: "LS_IP"
             value: {{ .Values.lsIP | quote }}
@@ -83,6 +73,7 @@ spec:
             value: "SIDECAR"
           - name: "NS_ENABLE_MONITORING"
             value: "YES"
+{{- if .Values.cpxConfig.loginCredentials.mount }}
           - name: "NS_USER"
             valueFrom:
              secretKeyRef:
@@ -93,6 +84,7 @@ spec:
              secretKeyRef:
               name: {{ .Values.cpxConfig.loginCredentials.secretName }}
               key: password
+{{- end }}
 {{- if .Values.logProxy }}
           - name: "NS_LOGPROXY"
             value: {{ .Values.logProxy | quote }}
@@ -134,6 +126,7 @@ spec:
             - "--target-nsip=127.0.0.1"
             - "--port={{ .Values.exporter.ports.containerPort }}"
           env:
+{{- if .Values.cpxConfig.loginCredentials.mount }}
           - name: "NS_USER"
             valueFrom:
              secretKeyRef:
@@ -144,6 +137,7 @@ spec:
              secretKeyRef:
               name: {{ .Values.cpxConfig.loginCredentials.secretName }}
               key: password
+{{- end }}
           securityContext:
             readOnlyRootFilesystem: true
 {{- end }}
