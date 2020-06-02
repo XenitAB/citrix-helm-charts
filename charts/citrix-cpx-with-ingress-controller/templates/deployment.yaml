@@ -23,24 +23,24 @@ spec:
              privileged: true
           env:
           - name: "EULA"
-            value: "{{ .Values.license.accept }}"
+            value: "{{ .Values.license.accept | quote }}"
           - name: "KUBERNETES_TASK_ID"
             value: ""
 {{- if .Values.lsIP }}
           - name: "LS_IP"
-            value: {{ .Values.lsIP }}
+            value: {{ .Values.lsIP | quote }}
 {{- end }}
 {{- if .Values.lsPort }}
           - name: "LS_PORT"
-            value: {{ .Values.lsPort }}
+            value: {{ .Values.lsPort | quote }}
 {{- end }}
 {{- if .Values.platform }}
           - name: "PLATFORM"
-            value: {{ .Values.platform }}
+            value: {{ .Values.platform | quote }}
 {{- end }}
 {{- if .Values.bandwidth }}
           - name: "BANDWIDTH"
-            value: {{ .Values.bandwidth }}
+            value: {{ .Values.bandwidth | quote }}
 {{- end }}
           volumeMounts:
             - mountPath: /cpx/conf/
@@ -148,56 +148,4 @@ spec:
             items:
             - key: {{ .Values.cpxConfig.dhkeySecret.dhkeyName }}
               path: {{ .Values.cpxConfig.dhkeySecret.dhkeyName }}
-{{- end }}
----
-
-apiVersion: v1
-kind: Service
-metadata:
-  name: cpx-service
-  labels:
-    app: cpx-service
-    service-type: citrix-adc-cpx-monitor
-spec:
-  externalTrafficPolicy: {{ .Values.service.externalTrafficPolicy }}
-  type: {{ .Values.service.type }}
-  sessionAffinity: {{ .Values.service.sessionAffinity }}
-  ports:
-  - port: 80
-    protocol: TCP
-    name: http
-  - port: 443
-    protocol: TCP
-    name: https
-{{- if .Values.exporter.required }}
-  - port: {{ .Values.exporter.ports.containerPort }}
-    targetPort: {{ .Values.exporter.ports.containerPort }}
-    name: exporter-port
-{{- end }}
-  selector:
-    app: cpx-ingress
-
----
-
-{{- if .Values.exporter.required }}
-
-apiVersion: monitoring.coreos.com/v1
-kind: ServiceMonitor
-metadata:
- name: citrix-adc-cpx-servicemonitor
- labels:
-   servicemonitor: citrix-adc-cpx
-spec:
- endpoints:
- - interval: 30s
-   port: exporter-port
- selector:
-   matchLabels:
-     service-type: citrix-adc-cpx-monitor
- namespaceSelector:
-   matchNames:
-   - monitoring
-   - default
-   - {{ .Release.Namespace }}
-
 {{- end }}
