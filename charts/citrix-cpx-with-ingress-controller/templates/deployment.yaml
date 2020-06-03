@@ -48,9 +48,14 @@ spec:
             - mountPath: /cpx/crash/
               name: cpx-volume2
 {{- if .Values.cpxConfig.configmap.mount }}
-            - name: cpx-configuration
+            - name: {{ .Values.cpxConfig.configmap.name }}
               mountPath: /etc/cpx.conf
               subPath: cpx.conf
+{{- end }}
+{{- if .Values.cpxConfig.scriptConfigmap.mount }}
+            - name: {{ .Values.cpxConfig.scriptConfigmap.name }}
+              mountPath: {{ .Values.cpxConfig.scriptConfigmap.mountPath }}
+              mode: 0777
 {{- end }}
 {{- if .Values.cpxConfig.dhkeySecret.mount }}
             - name: dhkey
@@ -147,9 +152,14 @@ spec:
         - name: cpx-volume2
           emptyDir: {}
 {{- if .Values.cpxConfig.configmap.mount }}
-        - name: cpx-configuration
+        - name: {{ .Values.cpxConfig.configmap.name }}
           configMap:
             name: {{ .Values.cpxConfig.configmap.name }}
+{{- end }}
+{{- if .Values.cpxConfig.scriptConfigmap.mount }}
+        - name: {{ .Values.cpxConfig.scriptConfigmap.name }}
+          configMap:
+            name: {{ .Values.cpxConfig.scriptConfigmap.name }}
 {{- end }}
 {{- if .Values.cpxConfig.dhkeySecret.mount }}
         - name: dhkey

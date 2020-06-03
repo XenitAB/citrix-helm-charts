@@ -50,6 +50,12 @@ cpxConfig:
     useExisting: false      # Should an existing configmap containing cpx.conf be used?
     mount: false            # Should the CPX container mount the configmap containing cpx.conf?
     name: cpx-configuration # Name of the configmap containing cpx.conf
+  # Use to add custom scripts that can be executed from cpx.conf
+  scriptConfigmap:
+    useExisting: false            # Should an existing configmap be used?
+    mount: true                   # Should the configmap be mounted?
+    name: cpx-scripts             # Name of the configmap containing the scripts
+    mountPath: /etc/customscripts # Path where to mount the scripts
   # Use the following operator to create the dhkey: https://github.com/XenitAB/dhkey-operator
   dhkeySecret:
     useExisting: false      # Should an existing secret containing the dhkey be used?

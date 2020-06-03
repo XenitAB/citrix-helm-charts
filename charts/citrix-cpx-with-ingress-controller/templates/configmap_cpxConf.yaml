@@ -6,6 +6,13 @@ metadata:
   name: {{ .Values.cpxConfig.configmap.name }}
 data:
   cpx.conf: |
+{{- if .Values.cpxConfig.scriptConfigmap.mount }}
+{{- if not .Values.cpxConfig.scriptConfigmap.useExisting }}
+    #Shell Commands
+    bash {{ .Values.cpxConfig.scriptConfigmap.mountPath }}/fix_licenseserver.sh
+    
+{{- end }}
+{{- end }}
     #NetScaler Commands
     set ssl param -defaultProfile ENABLED
 
