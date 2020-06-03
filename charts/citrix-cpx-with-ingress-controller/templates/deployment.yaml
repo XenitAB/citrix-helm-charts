@@ -55,7 +55,6 @@ spec:
 {{- if .Values.cpxConfig.scriptConfigmap.mount }}
             - name: {{ .Values.cpxConfig.scriptConfigmap.name }}
               mountPath: {{ .Values.cpxConfig.scriptConfigmap.mountPath }}
-              mode: 0777
 {{- end }}
 {{- if .Values.cpxConfig.dhkeySecret.mount }}
             - name: dhkey
@@ -160,6 +159,7 @@ spec:
         - name: {{ .Values.cpxConfig.scriptConfigmap.name }}
           configMap:
             name: {{ .Values.cpxConfig.scriptConfigmap.name }}
+            defaultMode: 0777
 {{- end }}
 {{- if .Values.cpxConfig.dhkeySecret.mount }}
         - name: dhkey
