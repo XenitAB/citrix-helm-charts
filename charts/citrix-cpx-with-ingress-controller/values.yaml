@@ -65,7 +65,7 @@ cpxConfig:
     dhkey: ""               # Should not be used, better to creat it outside of helm. Should be the dhkey base 64 encoded
   loginCredentials:
     useExisting: false           # Should an existing secret be used?
-    mount: false                 # Should the secret be mounted into NS_USER and NS_PASSWORD for cic and exported?
+    mount: true                  # Should the secret be mounted into NS_USER and NS_PASSWORD for cic and exported?
     secretName: cpx-credentials  # The existing secrets name or the secret that should be created
     username: nsroot             # Username for the netscaler
     password: nsroot             # Password for the netscaler
