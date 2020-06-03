@@ -67,8 +67,8 @@ cpxConfig:
     useExisting: false           # Should an existing secret be used?
     mount: false                 # Should the secret be mounted into NS_USER and NS_PASSWORD for cic and exported?
     secretName: cpx-credentials  # The existing secrets name or the secret that should be created
-    username: bnNyb290           # Username for the netscaler
-    password: bnNyb290           # Password for the netscaler
+    username: nsroot             # Username for the netscaler
+    password: nsroot             # Password for the netscaler
     
 # CRD Installation
 crds:
