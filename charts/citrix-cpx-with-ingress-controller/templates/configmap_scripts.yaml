@@ -11,12 +11,12 @@ data:
       LICENSE_SUCCESS=false
       PLATFROM_SUCCESS=false
       echo "Setting license server try: ${i}"
-      CLI_OUTPUT=$(cli_script.sh "add licenseserver {{ lsIP }} -port {{ lsPort }}")
+      CLI_OUTPUT=$(cli_script.sh "add licenseserver {{ .Values.lsIP }} -port {{ .Values.lsPort }}")
       if [[ "${CLI_OUTPUT}" == *"ERROR: Unable to connect to licenseserver"* ]]; then
         echo "Unable to add license server. Sleeping for 5 seconds."
         sleep 5
       elif [[ "${CLI_OUTPUT}" == *"ERROR: Resource already exists"* ]]; then
-        CLI_OUTPUT=$(cli_script.sh "set licenseserver {{ lsIP }} -port {{ lsPort }}")
+        CLI_OUTPUT=$(cli_script.sh "set licenseserver {{ .Values.lsIP }} -port {{ .Values.lsPort }}")
         if [[ "${CLI_OUTPUT}" != *"ERROR:"* ]]; then
           echo "Successfully set license server."
           LICENSE_SUCCESS=true
@@ -29,7 +29,7 @@ data:
         LICENSE_SUCCESS=true
       fi
       if ${LICENSE_SUCCESS}; then
-        CLI_OUTPUT=$(cli_script.sh "set capacity -platform {{ platform }}")
+        CLI_OUTPUT=$(cli_script.sh "set capacity -platform {{ .Values.platform }}")
         if [[ "${CLI_OUTPUT}" != *"ERROR:"* ]]; then
           echo "Successfully configured platform."
           break
