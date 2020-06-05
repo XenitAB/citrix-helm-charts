@@ -5,6 +5,9 @@ metadata:
   labels:
     app: cpx-service
     service-type: citrix-adc-cpx-monitor
+  {{- if .Values.service.annotations }}
+  annotations: {{ toYaml .Values.service.annotations | nindent 4 }}
+  {{- end }}
 spec:
   externalTrafficPolicy: {{ .Values.service.externalTrafficPolicy }}
   type: {{ .Values.service.type }}

@@ -81,3 +81,4 @@ service:
   externalTrafficPolicy: Cluster # Cluster | Local
   type: NodePort                 # ClusterIP | NodePort | LoadBalancer
   sessionAffinity: ClientIP      # None | ClientIP
+  annotations: {}                # Annotations to add to the service
