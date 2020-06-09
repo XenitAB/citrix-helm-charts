@@ -2,7 +2,7 @@ citrixAdmAgent:
     ip: citrix-adm-agent
     appId: kubernetes-dev
     containerImageTag: latest
-    imagePullPolicy: Always
+    imagePullPolicy: IfNotPresent
 
 secret:
   useExistingSecret: true

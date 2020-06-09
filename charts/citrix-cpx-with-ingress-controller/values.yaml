@@ -4,13 +4,13 @@
 
 # cpximage contains information needed to fetch CPX image
 image: quay.io/citrix/citrix-k8s-cpx-ingress:13.0-52.24
-pullPolicy: Always
+pullPolicy: IfNotPresent
 # Number of replicas
 replicas: 1
 # cicimage contains information needed to fetch CIC image
 cic:
   image: quay.io/citrix/citrix-k8s-ingress-controller:1.8.19
-  pullPolicy: Always
+  pullPolicy: IfNotPresent
   required: true
 # Should CIC update the ingress status with the LB IP? Used by external-dns to update DNS
 updateIngressStatus: true
@@ -43,7 +43,7 @@ http2ServerSide: "OFF"
 exporter:
   required: false
   image: quay.io/citrix/citrix-adc-metrics-exporter:1.4.3
-  pullPolicy: Always
+  pullPolicy: IfNotPresent
   ports:
     containerPort: 8888
 # Additional configuration
