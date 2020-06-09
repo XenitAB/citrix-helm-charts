@@ -6,7 +6,7 @@
 # written permission of Citrix Systems, Inc.
 
 apiVersion: v1
-appVersion: 13.0-60.19
+appVersion: 13.0-61.39
 description: Citrix ADM Agent Application
 name: citrix-adm-agent
-version: 13.0-60.19
+version: 13.0-61.39

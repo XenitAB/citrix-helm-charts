@@ -1,7 +1,7 @@
 citrixAdmAgent:
     ip: citrix-adm-agent
     appId: kubernetes-dev
-    containerImageTag: latest
+    containerImageTag: 13.0-61.39
     imagePullPolicy: IfNotPresent
 
 secret:
