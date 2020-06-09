@@ -12,6 +12,8 @@ cic:
   image: quay.io/citrix/citrix-k8s-ingress-controller:1.8.19
   pullPolicy: Always
   required: true
+# Should CIC update the ingress status with the LB IP? Used by external-dns to update DNS
+updateIngressStatus: true
 # openshift is set to true if charts are being deployed in OpenShift environment.
 openshift: false
 # lsIP contains the Citrix Application Delivery Management (ADM) IP address to license Citrix ADC CPX.

@@ -120,6 +120,9 @@ spec:
             - --default-ssl-certificate
               {{ .Release.Namespace }}/{{ .Values.defaultSSLCert }}
 {{- end }}
+{{- if .Values.updateIngressStatus }}
+            - --update-ingress-status YES
+{{- end }}
 {{- end }}
 {{- if .Values.exporter.required }}
         - name: exporter
